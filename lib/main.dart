@@ -1,9 +1,15 @@
+import 'dart:async';
+import 'dart:io';
+
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:go_sell_sdk_flutter/go_sell_sdk_flutter.dart';
+import 'package:go_sell_sdk_flutter/model/models.dart';
+import 'awesome_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tap_payment/flutter_tap_payment.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -44,10 +50,11 @@ class _MyHomePageState extends State<MyHomePage> {
                         builder: (BuildContext context) => TapPayment(
                             apiKey: "sk_test_gwmjLpYk2H7xB6Fl5tTr9KWE",
                             redirectUrl: "http://your_website.com/redirect_url",
-                            postUrl: "http://your_website.com/post_url",
+                            // postUrl: "http://your_website.com/post_url",
+                            postUrl: "https://tap.company",
                             paymentData: const {
                               "amount": 10,
-                              "currency": "OMR",
+                              "currency": "PKR",
                               "threeDSecure": true,
                               "save_card": false,
                               "description": "Test Description",
