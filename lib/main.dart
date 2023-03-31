@@ -3,8 +3,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:go_sell_sdk_flutter/go_sell_sdk_flutter.dart';
 import 'package:go_sell_sdk_flutter/model/models.dart';
+import 'package:paymentgatewayimplement/payment_controller.dart';
 import 'awesome_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tap_payment/flutter_tap_payment.dart';
@@ -17,83 +19,42 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'Flutter Tap Payment',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Tap Payment Example'),
+      home: MyHomePage(title: 'Flutter Tap Payment Example'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+class MyHomePage extends StatelessWidget {
+  MyHomePage({Key? key, required this.title}) : super(key: key);
   final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
+  PaymentController paymentControl = Get.put(PaymentController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(widget.title),
+          title: Text(title),
         ),
-        body: Center(
-          child: TextButton(
-              onPressed: () => {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (BuildContext context) => TapPayment(
-                            apiKey: "sk_test_gwmjLpYk2H7xB6Fl5tTr9KWE",
-                            redirectUrl: "http://your_website.com/redirect_url",
-                            // postUrl: "http://your_website.com/post_url",
-                            postUrl: "https://tap.company",
-                            paymentData: const {
-                              "amount": 10,
-                              "currency": "PKR",
-                              "threeDSecure": true,
-                              "save_card": false,
-                              "description": "Test Description",
-                              "statement_descriptor": "Sample",
-                              "metadata": {"udf1": "test 1", "udf2": "test 2"},
-                              "reference": {
-                                "transaction": "txn_0001",
-                                "order": "ord_0001"
-                              },
-                              "receipt": {"email": false, "sms": true},
-                              "customer": {
-                                "first_name": "test",
-                                "middle_name": "test",
-                                "last_name": "test",
-                                "email": "test@test.com",
-                                "phone": {
-                                  "country_code": "965",
-                                  "number": "50000000"
-                                }
-                              },
-                              // "merchant": {"id": ""},
-                              "source": {"id": "src_card"},
-                              // "destinations": {
-                              //   "destination": [
-                              //     {"id": "480593777", "amount": 2, "currency": "KWD"},
-                              //     {"id": "486374777", "amount": 3, "currency": "KWD"}
-                              //   ]
-                              // }
-                            },
-                            onSuccess: (Map params) async {
-                              print("onSuccess: $params");
-                            },
-                            onError: (error) {
-                              print("onError: $error");
-                            }),
-                      ),
-                    )
-                  },
-              child: const Text("Make Payment")),
-        ));
+        body: GetBuilder(
+            init: paymentControl,
+            builder: (context) {
+              return SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Center(
+                      child: TextButton(
+                          onPressed: () => {paymentControl.paymentfunc()},
+                          child: const Text("Make Payment")),
+                    ),
+                    Text("${paymentControl.statusCode}"),
+                    Text("${paymentControl.responseData}")
+                  ],
+                ),
+              );
+            }));
   }
 }
