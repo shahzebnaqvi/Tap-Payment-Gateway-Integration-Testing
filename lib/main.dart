@@ -47,7 +47,11 @@ class MyHomePage extends StatelessWidget {
                   children: [
                     Center(
                       child: TextButton(
-                          onPressed: () => {paymentControl.paymentfunc()},
+                          onPressed: () => {
+                                paymentControl.paymentfunc(
+                                  10,
+                                )
+                              },
                           child: const Text("Make Payment")),
                     ),
                     Text("${paymentControl.statusCode}"),

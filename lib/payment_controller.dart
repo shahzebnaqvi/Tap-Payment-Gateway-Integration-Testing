@@ -5,15 +5,16 @@ import 'package:get/get.dart';
 class PaymentController extends GetxController {
   var statusCode = "";
   var responseData = "";
-  paymentfunc() {
+  paymentfunc(amount) {
     Get.to(
       TapPayment(
           apiKey: "sk_test_gwmjLpYk2H7xB6Fl5tTr9KWE",
-          redirectUrl: "http://your_website.com/redirect_url",
+          // redirectUrl: "http://your_website.com/redirect_url",
+          redirectUrl: "#",
           // postUrl: "http://your_website.com/post_url",
           postUrl: "https://tap.company",
-          paymentData: const {
-            "amount": 10,
+          paymentData: {
+            "amount": amount,
             "currency": "SAR",
             "threeDSecure": true,
             "save_card": false,
